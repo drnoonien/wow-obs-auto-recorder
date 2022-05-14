@@ -10,8 +10,8 @@ automatically record boss pulls in World of Warcraft.
 [FAQ](#faq)
 
 ## Requirements
-- Windows
-- World of Warcraft
+- Windows (7 or 10, maybe 11?)
+- World of Warcraft (Shadowlands 9.2)
 - [BigWigs](https://github.com/BigWigsMods/BigWigs/releases) or
   [DBM](https://www.curseforge.com/wow/addons/deadly-boss-mods)
 - [WeakAuras](https://github.com/WeakAuras/WeakAuras2/releases)
@@ -19,21 +19,26 @@ automatically record boss pulls in World of Warcraft.
 - [AutoHotkey](https://github.com/Lexikos/AutoHotkey_L/releases)
   (v1.1.21.00 or newer)
 - [OBS](https://github.com/obsproject/obs-studio/releases) (26.1.1 64
-  bit, will likely work with newer too)
+  bit, will likely work with newer too, open an issue if it doesn't)
 
 ## Explanation
 The difficulty in automatically recording pulls in World of Warcraft
 comes from the lack of an interface between in-game events and
-Windows. To get around this, we can draw pixels in-game, which we then
-read back out in Windows.
+Windows. Creating one by reading memory results in a very quick ban,
+so instead we'll use a more primitive approach.
 
-This setup contains a WeakAura that will draw a pixel in the top-left
-corner of the game. The WA will then listen to pull count timers from
-BigWigs or DBM and update the color of the pixel when combat is about
-to begin / has begun / has ended.
+A WeakAura will draw a pixel in the top-left corner of the game. The
+WA will then listen to pull count timers from BigWigs or DBM and
+update the color of the pixel when combat is about to begin / has
+begun / has ended.
 
-The Autohotkey script will take care of reading this pixel, and
-sending keystrokes to OBS in order to start / stop the recording.
+The AutoHotkey script will read then screen information for that pixel,
+and send keystrokes to OBS in order to control the recording.
+
+This allows us to interface with the game without touching any memory.
+Meaning Blizzard can't block this without starting to blanket-ban AHK,
+which they won't do since it's a general purpose software. Is the
+theory at least. I'll update this repo once I get banned.
 
 ## Setup
 
